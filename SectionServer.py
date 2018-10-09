@@ -13,25 +13,9 @@ CHUNK_SIZE = 32768
 FILE = '/Users/banana/Desktop/cpsc471_proj1/zeros'
 
 # def usage(program):
-#     sys.exit(f'Usage: python3 {program} [FILE] ')
+#     sys.exit(f'Usage: python3 {program} [FILE] '
 
-
-# # serverSocket.listen(5)
-
-# while True:
-
-    
-
-
-
-#     data = chunk_file.read()
-# for i in range (0, len(data), CHUNK_SIZE):
-	
-
-
-#access file from client and convert it to hex
-# def 
-
+#checksum for the file
 def checksum(filepath):
     print("checksum")
     with open(filepath, 'rb') as servedFile:
@@ -55,10 +39,10 @@ def checksum(filepath):
 
 def main():
     print("im main starts")
-
+    
     print(checksum(FILE))
 
-
+    #connction with client
     serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     serverSocket.bind((serverName, PORT))
 
@@ -92,13 +76,6 @@ def main():
 if __name__ == '__main__':
     print("im main")
     main()
-
-
-#1. socket connection
-#2. file limits
-#3. request strings ex. "LIST" "SECTION {n}"
-#4. making an array to store chunk file info 
-#
 
 
 
