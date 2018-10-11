@@ -15,10 +15,13 @@ PORT = 7037
 serverName = ''
 MAX_UDP_PAYLOAD = 65507
 CHUNK_SIZE = 32768
+#error message
+ERROR = "not valid command"
 
 def usage(program):
     sys.exit(f'Usage: python3 {program} [FILE] ')
 
+#checksum for the entire file
 def checksum(filepath):
     with open(filepath, 'rb') as servedFile:
         hash_md5 = hashlib.md5()
@@ -28,7 +31,7 @@ def checksum(filepath):
 def main(FILE):
     serverSocket = socket(AF_INET, SOCK_DGRAM)
     serverSocket.bind((serverName, PORT))
-    print("The sever is read to receive data...", serverName, PORT)
+    print("The sever is ready to receive data...", serverName, PORT)
 
     #replying client's requests "SECTION {n} and send file by chunks"
     list_chunkfile = list()
@@ -37,6 +40,7 @@ def main(FILE):
     #counter for sections 
     i = 0
     with open(FILE, 'rb') as servedFile:
+        #anonymous 
         for chunk_file in iter(lambda: servedFile.read(CHUNK_SIZE), b""):
             hash_md5 = hashlib.md5()
             hash_md5.update(chunk_file)
@@ -47,8 +51,6 @@ def main(FILE):
             if(i > 1024):
                 raise ValueError ("File is too large...")
 
-    #error message
-    error = "not valid command"
     #reveiving and replying to client         
     while True:
         message, clientAddress = serverSocket.recvfrom(MAX_UDP_PAYLOAD)
@@ -60,7 +62,7 @@ def main(FILE):
             message = list_chunkfile[int(data.split(maxsplit = 2)[1])]
             serverSocket.sendto(message, clientAddress)
         else:
-            serverSocket.sendto(error.encode(), clientAddress)
+            serverSocket.sendto(ERROR.encode(), clientAddress)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
